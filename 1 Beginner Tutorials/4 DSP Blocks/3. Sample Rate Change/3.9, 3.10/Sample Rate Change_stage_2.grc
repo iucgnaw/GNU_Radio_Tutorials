@@ -74,6 +74,7 @@ blocks:
     cutoff_freq: samp_rate/(decimation_rate*2)
     gain: '1.0'
     samp_rate: samp_rate
+    value: ''
     width: samp_rate/(decimation_rate*4)
     win: window.WIN_HAMMING
   states:
@@ -99,7 +100,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: samp_rate*decimation_rate
+    value: samp_rate/decimation_rate
   states:
     bus_sink: false
     bus_source: false
@@ -120,6 +121,7 @@ blocks:
     offset: '0'
     phase: '0'
     samp_rate: samp_rate
+    showports: 'False'
     type: complex
     waveform: analog.GR_COS_WAVE
   states:
@@ -256,3 +258,4 @@ connections:
 
 metadata:
   file_format: 1
+  grc_version: 3.10.9.2
