@@ -124,9 +124,9 @@ blocks:
       \        )\n        # if an attribute with the same name as a parameter is found,\n\
       \        # a callback is registered (properties work, too).\n        self.additionFlag\
       \ = additionFlag\n\n    def work(self, input_items, output_items):\n       \
-      \ \"\"\"example: add or multiply based on flag\"\"\"\n        if (self.additionFlag\
-      \ == True):\n            output_items[0][:] = input_items[0][:] + input_items[1][:]\n\
-      \        else:\n            output_items[0][:] = input_items[0][:] * input_items[1][:]\n\
+      \ \"\"\"example: add or multiply based on flag\"\"\"\n        if self.additionFlag:\n\
+      \            output_items[0][:] = input_items[0][:] + input_items[1][:]\n  \
+      \      else:\n            output_items[0][:] = input_items[0][:] * input_items[1][:]\n\
       \        return len(output_items[0])\n"
     additionFlag: 'False'
     affinity: ''
