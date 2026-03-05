@@ -1,3 +1,5 @@
+Note: As described in page:
+
 A Python .py file and YAML .yml file will be created. For GNU Radio v3.8 the files will be created in your home directory:
 /home/$USER/.grc_gnuradio/
 
