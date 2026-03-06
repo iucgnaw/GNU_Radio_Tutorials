@@ -1,0 +1,996 @@
+options:
+  parameters:
+    author: muaddib
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: Use range widgets as bounding boxes for operations on sub-band
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: bandlimited_threshold_detector
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Bandlimited Threshold Detector
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: below_zero
+  id: variable
+  parameters:
+    comment: ''
+    value: '-1000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [416, 76.0]
+    rotation: 0
+    state: enabled
+- name: fft_size
+  id: variable
+  parameters:
+    comment: ''
+    value: '8192'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [512, 76.0]
+    rotation: 0
+    state: enabled
+- name: full_band_size
+  id: variable
+  parameters:
+    comment: ''
+    value: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 12.0]
+    rotation: 0
+    state: enabled
+- name: in_box_spec_len
+  id: variable
+  parameters:
+    comment: ''
+    value: np.abs(up_line_adj-low_line_adj)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1232, 484.0]
+    rotation: 0
+    state: enabled
+- name: low_bound_vec_bottom_half
+  id: variable
+  parameters:
+    comment: ''
+    value: (low_line_adj)*(below_zero,)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [712, 12.0]
+    rotation: 0
+    state: enabled
+- name: low_bound_vec_top_half
+  id: variable
+  parameters:
+    comment: ''
+    value: (fft_size-low_line_adj-1)*(below_zero,)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [712, 76.0]
+    rotation: 0
+    state: enabled
+- name: low_line_adj
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 0,0,1,1
+    label: Lower Bound
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    outputmsgname: value
+    rangeType: int
+    showports: 'False'
+    start: '1'
+    step: '1'
+    stop: fft_size-1
+    value: fft_size//6
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1408, 4.0]
+    rotation: 0
+    state: true
+- name: probe_out
+  id: variable_function_probe
+  parameters:
+    block_id: vec_probe
+    comment: ''
+    function_args: ''
+    function_name: level
+    poll_rate: '10'
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [280, 12.0]
+    rotation: 0
+    state: disabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '100000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 12]
+    rotation: 0
+    state: enabled
+- name: thresh_adj
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 0,1,1,1
+    label: Thresh
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    outputmsgname: value
+    rangeType: int
+    showports: 'False'
+    start: '-200'
+    step: '1'
+    stop: '100'
+    value: '-10'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 4.0]
+    rotation: 0
+    state: enabled
+- name: thresh_val
+  id: variable
+  parameters:
+    comment: ''
+    value: '-10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [512, 12.0]
+    rotation: 0
+    state: disabled
+- name: up_bound_vec_bottom_half
+  id: variable
+  parameters:
+    comment: ''
+    value: (up_line_adj)*(below_zero,)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [904, 12.0]
+    rotation: 0
+    state: enabled
+- name: up_bound_vec_top_half
+  id: variable
+  parameters:
+    comment: ''
+    value: (fft_size-up_line_adj-1)*(below_zero,)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [904, 76.0]
+    rotation: 0
+    state: enabled
+- name: up_line_adj
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 0,2,1,1
+    label: Upper Bound
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    outputmsgname: value
+    rangeType: int
+    showports: 'False'
+    start: '1'
+    step: '1'
+    stop: fft_size-1
+    value: fft_size//3
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1544, 4.0]
+    rotation: 0
+    state: true
+- name: variable_function_probe_0
+  id: variable_function_probe
+  parameters:
+    block_id: vec_probe
+    comment: ''
+    function_args: ''
+    function_name: level
+    poll_rate: '10'
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [256, 196.0]
+    rotation: 0
+    state: disabled
+- name: vec_height
+  id: variable
+  parameters:
+    comment: ''
+    value: '10000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [416, 12.0]
+    rotation: 0
+    state: enabled
+- name: analog_noise_source_x_0
+  id: analog_noise_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.8'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_type: analog.GR_GAUSSIAN
+    seed: '0'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 1172.0]
+    rotation: 0
+    state: true
+- name: analog_noise_source_x_0_0
+  id: analog_noise_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.001'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    noise_type: analog.GR_GAUSSIAN
+    seed: '0'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [0, 492.0]
+    rotation: 0
+    state: true
+- name: analog_sig_source_x_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.2'
+    comment: ''
+    freq: 10e3
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    type: complex
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 588.0]
+    rotation: 0
+    state: true
+- name: analog_sig_source_x_0_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '.15'
+    comment: ''
+    freq: 15e3
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    type: complex
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 884.0]
+    rotation: 0
+    state: true
+- name: analog_sig_source_x_0_0_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.04'
+    comment: ''
+    freq: '0.25'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    type: complex
+    waveform: analog.GR_SQR_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [0, 1028.0]
+    rotation: 0
+    state: true
+- name: analog_sig_source_x_0_0_0_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '0.15'
+    comment: ''
+    freq: '0.4'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    type: complex
+    waveform: analog.GR_SQR_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 732.0]
+    rotation: 0
+    state: true
+- name: blocks_add_const_vxx_0
+  id: blocks_add_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: ((below_zero*10),)*(low_line_adj)+(0,)*in_box_spec_len+((below_zero*10),)*(fft_size-up_line_adj)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1232, 548.0]
+    rotation: 0
+    state: true
+- name: blocks_add_xx_0
+  id: blocks_add_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '4'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 520.0]
+    rotation: 0
+    state: true
+- name: blocks_max_xx_0
+  id: blocks_max_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: fft_size
+    vlen_out: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1504, 196.0]
+    rotation: 0
+    state: true
+- name: blocks_multiply_xx_0
+  id: blocks_multiply_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [312, 936.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_xx_0_0
+  id: blocks_multiply_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [296, 640.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle_0
+  id: blocks_throttle
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [824, 556.0]
+    rotation: 0
+    state: true
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport time\n\nclass blk(gr.sync_block):  # other base\
+      \ classes are basic_block, decim_block, interp_block\n    \"\"\"Embedded Python\
+      \ Block example - a simple multiply const\"\"\"\n\n    def __init__(self, vec_len=8192,\
+      \ peak_detect_file=\"/tmp/indexes.data\"):  # only default arguments here\n\
+      \        \"\"\"arguments to this function show up as parameters in GRC\"\"\"\
+      \n        gr.sync_block.__init__(\n            self,\n            name='Embedded\
+      \ Python Block',   # will show up in GRC\n            in_sig=[(np.float32,vec_len),(np.float32,vec_len)],\n\
+      \            out_sig=None\n        )\n        # if an attribute with the same\
+      \ name as a parameter is found,\n        # a callback is registered (properties\
+      \ work, too).\n        self.peak_detect_file=peak_detect_file\n\n    def work(self,\
+      \ input_items,output_items):\n        for vecindx in range(len(input_items[0])):\n\
+      \            if len(np.nonzero(input_items[0][vecindx] > input_items[1][vecindx][0])[0])>0:\n\
+      \                #print(\"number of crossings: \", len(np.nonzero(input_items[0][vecindx]\
+      \ > input_items[1][vecindx][0])[0]))\n                #print(\" level of crossings:\
+      \ \", np.nonzero(input_items[0][vecindx] > input_items[1][vecindx][0]))\n  \
+      \              #print(\" index of crossings: \", input_items[0][vecindx][np.nonzero(input_items[0][vecindx]\
+      \ > input_items[1][0])])\n                with open(self.peak_detect_file,'a')\
+      \ as fobj:\n                    fobj.write(str(time.time())+str(np.nonzero(input_items[0][vecindx]\
+      \ > input_items[1][vecindx][0])[0])+\",\"+str(input_items[0][vecindx][np.nonzero(input_items[0][vecindx]\
+      \ > input_items[1][0])])+'\\n')\n        return len(input_items[0])\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    peak_detect_file: '''/tmp/indexes.data'''
+    vec_len: fft_size
+  states:
+    _io_cache: ('Embedded Python Block', 'blk', [('vec_len', '8192'), ('peak_detect_file',
+      "'/tmp/indexes.data'")], [('0', 'float', 8192), ('1', 'float', 8192)], [], 'Embedded
+      Python Block example - a simple multiply const', ['peak_detect_file'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1760, 312.0]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import time
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1088, 12.0]
+    rotation: 0
+    state: true
+- name: import_0_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import numpy as np
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1088, 76.0]
+    rotation: 0
+    state: true
+- name: import_0_0_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import random
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1176, 4.0]
+    rotation: 0
+    state: true
+- name: logpwrfft_x_0
+  id: logpwrfft_x
+  parameters:
+    affinity: ''
+    alias: ''
+    average: 'False'
+    avg_alpha: '1.0'
+    comment: ''
+    fft_size: fft_size
+    frame_rate: '30'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ref_scale: '2'
+    sample_rate: samp_rate
+    shift: 'True'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1008, 508.0]
+    rotation: 0
+    state: true
+- name: low_band_line
+  id: blocks_vector_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'True'
+    tags: '[]'
+    type: float
+    vector: low_bound_vec_bottom_half+(vec_height,)+low_bound_vec_top_half
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 268.0]
+    rotation: 0
+    state: true
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: 3e3
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: interp_fir_filter_ccf
+    width: 1e3
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [328, 1140.0]
+    rotation: 0
+    state: true
+- name: qtgui_vector_sink_f_0
+  id: qtgui_vector_sink_f
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"dark red"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    grid: 'False'
+    gui_hint: 1,0,4,4
+    label1: Threshold
+    label10: ''
+    label2: Lower Bound
+    label3: Upper Bound
+    label4: Signal
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '4'
+    ref_level: '0'
+    showports: 'False'
+    update_time: '0.01'
+    vlen: fft_size
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    x_axis_label: '"x-Axis"'
+    x_start: '0'
+    x_step: '1.0'
+    x_units: '""'
+    y_axis_label: '"y-Axis"'
+    y_units: '""'
+    ymax: '10'
+    ymin: '-100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1256, 296.0]
+    rotation: 0
+    state: true
+- name: qtgui_vector_sink_f_0_0
+  id: qtgui_vector_sink_f
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"dark red"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    grid: 'False'
+    gui_hint: 5,2,1,2
+    label1: Threshold Xing
+    label10: ''
+    label2: Signal Over Threshold
+    label3: Upper Bound
+    label4: Signal
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"Spectrum Inside the Box Greater than Threshold"'
+    nconnections: '1'
+    ref_level: '0'
+    showports: 'False'
+    update_time: '0.01'
+    vlen: fft_size
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    x_axis_label: '"x-Axis"'
+    x_start: '0'
+    x_step: '1.0'
+    x_units: '""'
+    y_axis_label: '"y-Axis"'
+    y_units: '""'
+    ymax: '10'
+    ymin: '-100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1760, 172.0]
+    rotation: 0
+    state: true
+- name: qtgui_vector_sink_f_0_0_0
+  id: qtgui_vector_sink_f
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"dark red"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    grid: 'False'
+    gui_hint: 5,0,1,2
+    label1: Signal
+    label10: ''
+    label2: Signal Over Threshold
+    label3: Upper Bound
+    label4: Signal
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '"Spectrum Inside the Box"'
+    nconnections: '1'
+    ref_level: '0'
+    showports: 'False'
+    update_time: '0.01'
+    vlen: fft_size
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    x_axis_label: '"x-Axis"'
+    x_start: '0'
+    x_step: '1.0'
+    x_units: '""'
+    y_axis_label: '"y-Axis"'
+    y_units: '""'
+    ymax: '10'
+    ymin: '-100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1488, 524.0]
+    rotation: 0
+    state: true
+- name: snippet_0
+  id: snippet
+  parameters:
+    alias: ''
+    code: print(self.vec_probe.level()[0])
+    comment: ''
+    priority: '0'
+    section: main_after_start
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [704, 428.0]
+    rotation: 0
+    state: disabled
+- name: thresh_line
+  id: blocks_vector_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'True'
+    tags: '[]'
+    type: float
+    vector: (thresh_adj,)*full_band_size
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 156.0]
+    rotation: 0
+    state: true
+- name: upper_band_line
+  id: blocks_vector_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'True'
+    tags: '[]'
+    type: float
+    vector: up_bound_vec_bottom_half+(vec_height,)+up_bound_vec_top_half
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 380.0]
+    rotation: 0
+    state: true
+- name: vec_probe
+  id: blocks_probe_signal_vx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    type: float
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 124.0]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_sink_0
+  id: zeromq_pub_sink
+  parameters:
+    address: tcp://127.0.0.1:5500
+    affinity: ''
+    alias: ''
+    comment: ''
+    hwm: '-1'
+    key: ''
+    pass_tags: 'True'
+    timeout: '100'
+    type: float
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1760, 388.0]
+    rotation: 0
+    state: disabled
+
+connections:
+- [analog_noise_source_x_0, '0', low_pass_filter_0, '0']
+- [analog_noise_source_x_0_0, '0', blocks_add_xx_0, '0']
+- [analog_sig_source_x_0, '0', blocks_multiply_xx_0_0, '0']
+- [analog_sig_source_x_0_0, '0', blocks_multiply_xx_0, '0']
+- [analog_sig_source_x_0_0_0, '0', blocks_multiply_xx_0, '1']
+- [analog_sig_source_x_0_0_0_0, '0', blocks_multiply_xx_0_0, '1']
+- [blocks_add_const_vxx_0, '0', blocks_max_xx_0, '1']
+- [blocks_add_const_vxx_0, '0', qtgui_vector_sink_f_0_0_0, '0']
+- [blocks_add_xx_0, '0', blocks_throttle_0, '0']
+- [blocks_max_xx_0, '0', epy_block_0, '0']
+- [blocks_max_xx_0, '0', qtgui_vector_sink_f_0_0, '0']
+- [blocks_max_xx_0, '0', zeromq_pub_sink_0, '0']
+- [blocks_multiply_xx_0, '0', blocks_add_xx_0, '2']
+- [blocks_multiply_xx_0_0, '0', blocks_add_xx_0, '1']
+- [blocks_throttle_0, '0', logpwrfft_x_0, '0']
+- [logpwrfft_x_0, '0', blocks_add_const_vxx_0, '0']
+- [logpwrfft_x_0, '0', qtgui_vector_sink_f_0, '3']
+- [low_band_line, '0', qtgui_vector_sink_f_0, '1']
+- [low_pass_filter_0, '0', blocks_add_xx_0, '3']
+- [thresh_line, '0', blocks_max_xx_0, '0']
+- [thresh_line, '0', epy_block_0, '1']
+- [thresh_line, '0', qtgui_vector_sink_f_0, '0']
+- [thresh_line, '0', vec_probe, '0']
+- [upper_band_line, '0', qtgui_vector_sink_f_0, '2']
+
+metadata:
+  file_format: 1
+  grc_version: v3.11.0.0git-214-g6c34c6bb
