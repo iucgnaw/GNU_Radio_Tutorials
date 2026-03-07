@@ -11,34 +11,34 @@
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
 
-list(APPEND customModule_sources
-)
+list(APPEND customModule_sources)
 
-set(customModule_sources "${customModule_sources}" PARENT_SCOPE)
+set(customModule_sources
+    "${customModule_sources}"
+    PARENT_SCOPE)
 if(NOT customModule_sources)
-    MESSAGE(STATUS "No C++ sources... skipping lib/")
+    message(STATUS "No C++ sources... skipping lib/")
     return()
 endif(NOT customModule_sources)
 
 add_library(gnuradio-customModule SHARED ${customModule_sources})
 target_link_libraries(gnuradio-customModule gnuradio::gnuradio-runtime)
-target_include_directories(gnuradio-customModule
+target_include_directories(
+    gnuradio-customModule
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
-    PUBLIC $<INSTALL_INTERFACE:include>
-  )
+    PUBLIC $<INSTALL_INTERFACE:include>)
 set_target_properties(gnuradio-customModule PROPERTIES DEFINE_SYMBOL "gnuradio_customModule_EXPORTS")
 
 if(APPLE)
-    set_target_properties(gnuradio-customModule PROPERTIES
-        INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
-    )
+    set_target_properties(gnuradio-customModule PROPERTIES INSTALL_NAME_DIR
+                                                    "${CMAKE_INSTALL_PREFIX}/lib")
 endif(APPLE)
 
 ########################################################################
 # Install built library files
 ########################################################################
 include(GrMiscUtils)
-GR_LIBRARY_FOO(gnuradio-customModule)
+gr_library_foo(gnuradio-customModule)
 
 ########################################################################
 # Print summary
@@ -54,18 +54,15 @@ include(GrTest)
 # If your unit tests require special include paths, add them here
 #include_directories()
 # List all files that contain Boost.UTF unit tests here
-list(APPEND test_customModule_sources
-)
+list(APPEND test_customModule_sources)
 # Anything we need to link to for the unit tests go here
 list(APPEND GR_TEST_TARGET_DEPS gnuradio-customModule)
 
 if(NOT test_customModule_sources)
-    MESSAGE(STATUS "No C++ unit tests... skipping")
+    message(STATUS "No C++ unit tests... skipping")
     return()
 endif(NOT test_customModule_sources)
 
 foreach(qa_file ${test_customModule_sources})
-    GR_ADD_CPP_TEST("customModule_${qa_file}"
-        ${CMAKE_CURRENT_SOURCE_DIR}/${qa_file}
-    )
+    gr_add_cpp_test("customModule_${qa_file}" ${CMAKE_CURRENT_SOURCE_DIR}/${qa_file})
 endforeach(qa_file)

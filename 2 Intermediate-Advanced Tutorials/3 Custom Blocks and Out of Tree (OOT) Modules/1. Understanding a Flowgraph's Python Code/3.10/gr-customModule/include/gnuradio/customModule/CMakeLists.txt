@@ -9,7 +9,4 @@
 ########################################################################
 # Install public header files
 ########################################################################
-install(FILES
-    api.h
-    DESTINATION include/gnuradio/customModule
-)
+install(FILES api.h DESTINATION include/gnuradio/customModule)

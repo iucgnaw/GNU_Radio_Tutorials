@@ -9,18 +9,14 @@
 # Check if there is C++ code at all
 ########################################################################
 if(NOT customModule_sources)
-    MESSAGE(STATUS "No C++ sources... skipping python bindings")
+    message(STATUS "No C++ sources... skipping python bindings")
     return()
 endif(NOT customModule_sources)
 
 ########################################################################
 # Check for pygccxml
 ########################################################################
-GR_PYTHON_CHECK_MODULE_RAW(
-    "pygccxml"
-    "import pygccxml"
-    PYGCCXML_FOUND
-    )
+gr_python_check_module_raw("pygccxml" "import pygccxml" PYGCCXML_FOUND)
 
 include(GrPybind)
 
@@ -28,20 +24,18 @@ include(GrPybind)
 # Python Bindings
 ########################################################################
 
-list(APPEND customModule_python_files
-    python_bindings.cc)
+list(APPEND customModule_python_files python_bindings.cc)
 
-GR_PYBIND_MAKE_OOT(customModule
-   ../../..
-   gr::customModule
-   "${customModule_python_files}")
+gr_pybind_make_oot(customModule ../../.. gr::customModule "${customModule_python_files}")
 
-# copy in bindings .so file for use in QA test module
-add_custom_target(
-  copy_bindings_for_tests ALL
-  COMMAND
-    ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/*.so"
-    ${CMAKE_BINARY_DIR}/test_modules/gnuradio/customModule/
-  DEPENDS customModule_python)
+# copy bindings extension for use in QA test module
+add_custom_command(
+    TARGET customModule_python
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:customModule_python>
+            ${PROJECT_BINARY_DIR}/test_modules/gnuradio/customModule/)
 
-install(TARGETS customModule_python DESTINATION ${GR_PYTHON_DIR}/gnuradio/customModule COMPONENT pythonapi)
+install(
+    TARGETS customModule_python
+    DESTINATION ${GR_PYTHON_DIR}/gnuradio/customModule
+    COMPONENT pythonapi)
