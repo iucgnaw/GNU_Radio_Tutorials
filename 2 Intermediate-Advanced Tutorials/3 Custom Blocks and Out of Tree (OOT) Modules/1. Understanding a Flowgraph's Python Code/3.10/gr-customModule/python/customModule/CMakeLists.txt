@@ -19,7 +19,7 @@ add_subdirectory(bindings)
 ########################################################################
 # Install python sources
 ########################################################################
-gr_python_install(FILES __init__.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/customModule)
+gr_python_install(FILES __init__.py addSubSelect.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/customModule)
 
 ########################################################################
 # Handle the unit tests
