@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2022 YourName.
+ * Copyright 2026 YourName.
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -38,8 +38,8 @@ multDivSelect_impl::multDivSelect_impl(bool selector)
 multDivSelect_impl::~multDivSelect_impl() {}
 
 int multDivSelect_impl::work(int noutput_items,
-                               gr_vector_const_void_star& input_items,
-                               gr_vector_void_star& output_items)
+                             gr_vector_const_void_star& input_items,
+                             gr_vector_void_star& output_items)
 {
     auto in0 = static_cast<const input_type*>(input_items[0]);
     auto in1 = static_cast<const input_type*>(input_items[1]);
@@ -49,7 +49,6 @@ int multDivSelect_impl::work(int noutput_items,
         if (_selector) { out[index] = in0[index] * in1[index]; }
         else{ out[index] = in0[index] / in1[index]; }
     }
-
 
     // Tell runtime system how many output items we produced.
     return noutput_items;

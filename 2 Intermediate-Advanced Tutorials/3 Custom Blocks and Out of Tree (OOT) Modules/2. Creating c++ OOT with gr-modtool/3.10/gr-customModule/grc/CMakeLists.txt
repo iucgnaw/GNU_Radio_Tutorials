@@ -8,5 +8,4 @@
 
 install(FILES
     customModule_addSubSelect.block.yml
-    customModule_multDivSelect.block.yml DESTINATION share/gnuradio/grc/blocks
-)
+    customModule_multDivSelect.block.yml DESTINATION share/gnuradio/grc/blocks)

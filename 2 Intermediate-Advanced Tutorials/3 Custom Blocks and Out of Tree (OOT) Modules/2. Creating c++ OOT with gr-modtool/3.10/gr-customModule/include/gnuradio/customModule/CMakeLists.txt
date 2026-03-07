@@ -9,7 +9,5 @@
 ########################################################################
 # Install public header files
 ########################################################################
-install(FILES
-    api.h
-    multDivSelect.h DESTINATION include/gnuradio/customModule
-)
+install(FILES api.h
+    multDivSelect.h DESTINATION include/gnuradio/customModule)

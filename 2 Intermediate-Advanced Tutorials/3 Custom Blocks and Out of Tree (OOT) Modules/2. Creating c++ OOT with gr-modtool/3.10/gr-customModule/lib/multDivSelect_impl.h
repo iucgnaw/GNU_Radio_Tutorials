@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2022 YourName.
+ * Copyright 2026 YourName.
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
